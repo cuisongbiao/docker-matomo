@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: matomo-pv-volume
+  labels:
+    pv: matomo-pv-volume
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: "/data/sharedVolume/matomodata"
+    server: 192.168.51.167
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: matomo-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  selector:
+    matchLabels:
+      pv: matomo-pv-volume
