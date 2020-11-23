@@ -31,16 +31,16 @@ spec:
     spec:
       containers:
       - name: matomo
-        image: harbor.richinfoai.com/richinfoai/evilless-client:202011060934-07b9a31-v2.6.32-archive
+        image: registry.cn-shanghai.aliyuncs.com/allthink/matomo:3.14.1
         ports:
         - containerPort: 80
-        volumeMounts: # 将存储卷映射到容器内的某路径
-        - mountPath: /var/www/html
-        name: matomo-html
-        volumes: # 定义主机的某路径作为存储卷
+        volumeMounts:         # 将存储卷映射到容器内的某路径
         - name: matomo-html
-        hostPath:
-        path: /data/matomo
+          mountPath: /var/www/html
+        volumes:              # 这里是选择volume的类型
+        - name: matomo-html
+          persistentVolumeClaim:
+          claimName: matomo-pvc
         resources:
           limits:
             cpu: 0.02
