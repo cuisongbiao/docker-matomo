@@ -35,15 +35,15 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:         # 将存储卷映射到容器内的某路径
-        - name: matomo-html
+        - name: html
           mountPath: /var/www/html
-        volumes:              # 这里是选择volume的类型
-        - name: matomo-html
-          persistentVolumeClaim:
-          claimName: matomo-pvc
+      volumes:              # 这里是选择volume的类型
+      - name: matomo-html
+        persistentVolumeClaim:
+        claimName: mt-pvc
         resources:
           limits:
-            cpu: 0.02
+            cpu: 0.50
             memory: 32Mi
         env:
         - name: ACTIVE_PROFILE
