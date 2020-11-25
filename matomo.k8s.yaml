@@ -31,30 +31,21 @@ spec:
     spec:
       containers:
       - name: matomo
-        image: registry.cn-shanghai.aliyuncs.com/allthink/matomo:3.14.1
+        image: 192.168.51.165:5000/richinfoai/matomo:202011242015-0000000-v3.14.1
         ports:
         - containerPort: 80
-        volumeMounts:         # 将存储卷映射到容器内的某路径
+        resources:
+          requests:
+            cpu: 0.1
+            memory: 128Mi
+          limits:
+            cpu: 2
+            memory: 4Gi
+        volumeMounts:
         - name: html
           mountPath: /var/www/html
-      volumes:              # 这里是选择volume的类型
-      - name: matomo-html
+          subPath: matomo
+      volumes:
+      - name: html
         persistentVolumeClaim:
-        claimName: mt-pvc
-        resources:
-          limits:
-            cpu: 0.50
-            memory: 32Mi
-        env:
-        - name: ACTIVE_PROFILE
-          valueFrom:
-            configMapKeyRef:
-              name: const-config
-              key: active-profile
-        - name: EXTRA_CONFIG
-          value: '{"SERVER_NAME":"evilless-client"}'
-        - name: WORKER_IP
-          valueFrom:
-            configMapKeyRef:
-              name: const-config
-              key: worker-ip
+          claimName: mt-pvc
